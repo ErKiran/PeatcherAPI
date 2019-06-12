@@ -11,7 +11,7 @@ const teamschema = new mongoose.Schema({
                 required: true
             },
             location: {
-                type: String,
+                type: [String],
             }
         }
     ],
@@ -39,7 +39,7 @@ const teamschema = new mongoose.Schema({
                         type: String
                     },
                     image_url: {
-                        type: String
+                        type: [String]
                     },
                     price: {
                         type: String,

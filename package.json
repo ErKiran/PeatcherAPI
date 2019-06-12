@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/ErKiran/fantasy_api#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

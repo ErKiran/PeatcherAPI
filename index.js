@@ -1,7 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { MLab } = require('./configs/dev');
+const bodyParser = require('body-parser');
+
+const auth = require('./api/routes/auth')
 
 process.setMaxListeners(0);
 mongoose.set('useCreateIndex', true);
@@ -14,8 +16,10 @@ mongoose
 
 const app = express();
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use('/', auth);
 
 const port = process.env.PORT || 5000;
 
