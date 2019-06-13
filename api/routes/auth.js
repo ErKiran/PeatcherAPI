@@ -1,11 +1,14 @@
 const express = require('express')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport')
+const passport = require('passport');
+const sgMail = require('@sendgrid/mail');
 
 const User = require('../../models/user');
-const { secretOrKey } = require('../../configs/dev');
+const { secretOrKey, sendGrid } = require('../../configs/dev');
 const { validateUserInfo } = require('../../validations/user');
+
+sgMail.setApiKey(sendGrid);
 
 const router = express.Router();
 
@@ -27,6 +30,12 @@ router.post('/register', async (req, res) => {
         try {
             newUser.password = hash;
             const result = await newUser.save();
+            const msg = {
+                to: req.body.email,
+                from: 'watcher@fantasy.com',
+                templateId: 'd-53bf22258e54480d9ac1d457935356cd'
+            };
+            sgMail.send(msg);
             res.json(result)
         }
         catch (e) {
