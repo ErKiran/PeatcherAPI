@@ -13,7 +13,17 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
         const result = await Team.find({});
         res.json(result)
     }
-
+    else {
+        res.json({
+            msg: "You should be logged in as admin to perform this task"
+        })
+    }
 })
+
+router.get('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const result = await Team.find({ 'team.name': req.query.name }).select({ 'team.players': req.query.name });
+    res.json(result)
+})
+
 
 module.exports = router;
