@@ -39,7 +39,7 @@ const teamschema = new mongoose.Schema({
                         type: String
                     },
                     image_url: {
-                        type: [String]
+                        type: String
                     },
                     price: {
                         type: String,
