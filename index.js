@@ -12,7 +12,7 @@ mongoose.set('useCreateIndex', true);
 
 
 mongoose
-    .connect(MLab, { useNewUrlParser: true })
+    .connect(MLab, { useNewUrlParser: true, useFindAndModify: false })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 

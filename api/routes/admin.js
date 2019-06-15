@@ -8,9 +8,9 @@ const scoreboard = require('../../data/scoreboard.json')
 const router = express.Router();
 
 router.post('/insert', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.isadmin === true) {
-        /*await Team.deleteMany({})
-        await Team.insertMany(mock);*/
+    if (req.user.admin.is_admin === true && req.user.admin.is_techinical === true) {
+        await Team.deleteMany({})
+        // await Team.insertMany(mock);
         const result = await Team.find({ "tournament.team.players.name": req.body.name });
         res.json(result)
     }
@@ -22,9 +22,9 @@ router.post('/insert', passport.authenticate('jwt', { session: false }), async (
 })
 
 router.post('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (req.user.isadmin === true) {
-        const tournament = [], team = [], player = [];
-        player.push({
+    if (req.user.admin.is_admin === true) {
+        const tournament = [], team = [], players = [];
+        players.push({
             "name": req.body.players_name,
             "role": req.body.players_role,
             "image_url": req.body.players_image_url,
@@ -34,7 +34,7 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
         team.push({
             "name": req.body.team_name,
             "captain": req.body.team_captain,
-            "players": player
+            "players": players
         })
         tournament.push({
             "name": req.body.tournament_name,
@@ -42,17 +42,24 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
             "location": req.body.location,
             team
         })
-        const all = new Team({
-            tournament
-        })
-        const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
-        if (info === null || info.length === 0) {
-            const sended = await all.save()
-            res.json(sended)
+        const check_team = await Team.find({ 'tournament.team.name': req.body.team_name });
+        if (!(check_team.length===0)) {
+            const rty = await Team.findOneAndUpdate({ 'tournament.team.name': req.body.team_name }, { $addToSet: {'tournament.$.team.0.players': players } })
+            //const rty = await Team.updateOne({}, { $addToSet: { 'tournament.team.players': player } })
+            res.json(rty)
         } else {
-            res.json({
-                "error": "The player is already in the database"
+            const all = new Team({
+                tournament
             })
+            const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
+            if (info === null || info.length === 0) {
+                const sended = await all.save()
+                res.json(sended)
+            } else {
+                res.json({
+                    "error": "The player is already in the database"
+                })
+            }
         }
     }
 })
