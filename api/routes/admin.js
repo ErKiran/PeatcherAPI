@@ -43,10 +43,17 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
             team
         })
         const check_team = await Team.find({ 'tournament.team.name': req.body.team_name });
+        const check_tournament = await Team.find({'tournament.name':req.body.tournament_name,'tournament.year':req.body.year});
+        console.log(check_tournament)
         if (!(check_team.length===0)) {
+            const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
+            if (info === null || info.length === 0) {
             const rty = await Team.findOneAndUpdate({ 'tournament.team.name': req.body.team_name }, { $addToSet: {'tournament.$.team.0.players': players } })
-            //const rty = await Team.updateOne({}, { $addToSet: { 'tournament.team.players': player } })
             res.json(rty)
+            }
+            else{
+                res.json({error:`${req.body.players_name} is already in database`})
+            }
         } else {
             const all = new Team({
                 tournament
