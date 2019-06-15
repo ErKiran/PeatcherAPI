@@ -10,7 +10,6 @@ const router = express.Router();
 router.post('/insert', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.admin.is_admin === true && req.user.admin.is_techinical === true) {
         await Team.deleteMany({})
-        // await Team.insertMany(mock);
         const result = await Team.find({ "tournament.team.players.name": req.body.name });
         res.json(result)
     }
@@ -45,6 +44,7 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
         const check_team = await Team.find({ 'tournament.team.name': req.body.team_name });
         const check_tournament = await Team.find({'tournament.name':req.body.tournament_name,'tournament.year':req.body.year});
         console.log(check_tournament)
+        if(!(check_tournament.length===0)){
         if (!(check_team.length===0)) {
             const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
             if (info === null || info.length === 0) {
@@ -55,10 +55,25 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
                 res.json({error:`${req.body.players_name} is already in database`})
             }
         } else {
-            const all = new Team({
+             checkduplicate(res,tournament,req.body.players_name,req.body.year,req.body.team_name)
+        }
+        }
+        else{
+            checkduplicate(res,tournament,req.body.players_name,req.body.year,req.body.team_name)
+        }
+    }
+})
+
+router.get('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const to = await ScoreBoard.insertMany(scoreboard);
+    res.json(to);
+})
+
+const checkduplicate = async (res,tournament,player,year,team) =>{
+    const all = new Team({
                 tournament
             })
-            const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
+            const info = await Team.find({ 'tournament.team.players.name': player,'tournament.year': year,'tournament.team.name': team });
             if (info === null || info.length === 0) {
                 const sended = await all.save()
                 res.json(sended)
@@ -67,17 +82,7 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
                     "error": "The player is already in the database"
                 })
             }
-        }
-    }
-})
 
-router.get('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const to = await ScoreBoard.insertMany(scoreboard);
-    res.json(to)
-    //const result = await Team.find({ 'tournament.team.players.name': req.query.name })
-    //res.json(result)
-})
-
-
+}
 
 module.exports = router;
