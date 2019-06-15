@@ -7,9 +7,9 @@ const router = express.Router();
 
 router.post('/insert', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.isadmin === true) {
-        await Team.deleteMany({})
-        await Team.insertMany(mock);
-        const result = await Team.find({});
+        /*await Team.deleteMany({})
+        await Team.insertMany(mock);*/
+        const result = await Team.find({ "tournament.team.players.name": req.body.name });
         res.json(result)
     }
     else {
@@ -21,22 +21,31 @@ router.post('/insert', passport.authenticate('jwt', { session: false }), async (
 
 router.post('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (req.user.isadmin === true) {
-        const newinfo = new Team({
-            "tournament.name": req.body.tournament_name,
-            "tournament.year": req.body.year,
-            "tournament.location": req.body.location,
-            "tournament.team.name": req.body.team_name,
-            "tournament.team.captain": req.body.team_captain,
-            "tournament.team.players.name": req.body.players_name,
-            "tournament.team.players.role": req.body.players_role,
-            "tournament.team.players.image_url": req.body.players_image_url,
-            "tournament.team.players.dob": req.body.players_dob,
-            "tournament.team.players.price": req.body.players_price,
+        const tournament = [], team = [], player = [];
+        player.push({
+            "name": req.body.players_name,
+            "role": req.body.players_role,
+            "image_url": req.body.players_image_url,
+            "dob": req.body.players_dob,
+            "price": req.body.players_price,
+        })
+        team.push({
+            "name": req.body.team_name,
+            "captain": req.body.team_captain,
+            "players": player
+        })
+        tournament.push({
+            "name": req.body.tournament_name,
+            "year": req.body.year,
+            "location": req.body.location,
+            team
+        })
+        const all = new Team({
+            tournament
         })
         const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
-        console.log(info)
         if (info === null || info.length === 0) {
-            const sended = await newinfo.save()
+            const sended = await all.save()
             console.log(sended)
             res.json(sended)
         }
