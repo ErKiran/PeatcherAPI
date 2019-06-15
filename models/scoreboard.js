@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const ScoreBoard = new mongoose.Schema({
+const Schema = mongoose.Schema
+const scoreschema = new mongoose.Schema({
     tournament: {
         name: {
             type: String,
@@ -18,8 +19,11 @@ const ScoreBoard = new mongoose.Schema({
                 required: true
             },
             teams: [{
-                name: String,
-                required: true,
+                name:
+                {
+                    type: String,
+                    required: true
+                },
                 player_performance: [
                     {
                         players: {
@@ -30,9 +34,6 @@ const ScoreBoard = new mongoose.Schema({
                             type: Number
                         },
                         ball_bowled: {
-                            type: Number
-                        },
-                        run_scored: {
                             type: Number
                         },
                         wicket_taken: {
@@ -75,7 +76,8 @@ const ScoreBoard = new mongoose.Schema({
                             type: Boolean
                         },
                         is_MoM: {
-                            type: Boolean
+                            type: Boolean,
+                            default: false
                         }
                     }
                 ]
@@ -84,3 +86,5 @@ const ScoreBoard = new mongoose.Schema({
 
     }
 })
+
+module.exports = ScoreBoard = mongoose.model('scoreboard', scoreschema)

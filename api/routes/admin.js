@@ -1,7 +1,9 @@
 const express = require('express');
 const Team = require('../../models/team');
+const ScoreBoard = require('../../models/scoreboard');
 const passport = require('passport');
 const mock = require('../../data/mock.json');
+const scoreboard = require('../../data/scoreboard.json')
 
 const router = express.Router();
 
@@ -56,8 +58,10 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
 })
 
 router.get('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const result = await Team.find({ 'tournament.team.players.name': req.query.name })
-    res.json(result)
+    const to = await ScoreBoard.insertMany(scoreboard);
+    res.json(to)
+    //const result = await Team.find({ 'tournament.team.players.name': req.query.name })
+    //res.json(result)
 })
 
 
