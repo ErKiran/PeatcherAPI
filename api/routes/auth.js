@@ -23,7 +23,8 @@ router.post('/register', async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            isadmin: req.body.isadmin
+            'admin.is_admin': req.body.isadmin,
+            'admin.is_techinical': req.body.istechinical
         })
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(newUser.password, salt);
@@ -56,7 +57,7 @@ router.post('/login', async (req, res) => {
     else {
         const test = await bcrypt.compare(req.body.password, user[0].password);
         if (test === true) {
-            const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].isadmin };
+            const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
             const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
             res.json({
                 sucess: "true",

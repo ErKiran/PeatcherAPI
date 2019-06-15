@@ -46,16 +46,20 @@ router.post('/team', passport.authenticate('jwt', { session: false }), async (re
         const info = await Team.find({ 'tournament.team.players.name': req.body.players_name });
         if (info === null || info.length === 0) {
             const sended = await all.save()
-            console.log(sended)
             res.json(sended)
+        } else {
+            res.json({
+                "error": "The player is already in the database"
+            })
         }
     }
 })
 
 router.get('/team', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const result = await Team.find({ 'tournament.team.name': req.query.name }).select({ 'tournament.team.players': req.query.name });
+    const result = await Team.find({ 'tournament.team.players.name': req.query.name })
     res.json(result)
 })
+
 
 
 module.exports = router;
