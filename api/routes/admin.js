@@ -1,10 +1,5 @@
 const express = require('express');
-const Team = require('../../models/team');
-const ScoreBoard = require('../../models/scoreboard');
 const passport = require('passport');
-const mock = require('../../data/mock.json');
-const scoreboard = require('../../data/scoreboard.json')
-
 const router = express.Router();
 
 router.post('/insert', passport.authenticate('jwt', { session: false }), async (req, res) => {

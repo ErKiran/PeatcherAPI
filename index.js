@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const auth = require('./api/routes/auth');
 const admin = require('./api/routes/admin');
+const contactus = require('./api/routes/contact');
 
 process.setMaxListeners(0);
 mongoose.set('useCreateIndex', true);
@@ -26,6 +27,7 @@ require('./configs/passport')(passport)
 
 app.use('/', auth);
 app.use('/admin', admin);
+app.use('/contact_us', contactus)
 
 const port = process.env.PORT || 5000;
 

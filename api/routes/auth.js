@@ -13,60 +13,69 @@ sgMail.setApiKey(sendGrid);
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-    const { errors, isValid } = validateUserInfo(req.body);
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-    const user = await User.findOne({ email: req.body.email });
-    if (user === null) {
-        const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            'admin.is_admin': req.body.isadmin,
-            'admin.is_techinical': req.body.istechinical
-        })
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(newUser.password, salt);
-        try {
-            newUser.password = hash;
-            const result = await newUser.save();
-            const msg = {
-                to: req.body.email,
-                from: 'watcher@fantasy.com',
-                templateId: 'd-53bf22258e54480d9ac1d457935356cd'
-            };
-            sgMail.send(msg);
-            res.json(result)
+    try {
+        const { errors, isValid } = validateUserInfo(req.body);
+        if (!isValid) {
+            return res.status(400).json(errors);
         }
-        catch (e) {
-            throw e
+        const user = await User.findOne({ email: req.body.email });
+        if (user === null) {
+            const newUser = new User({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+                'admin.is_admin': req.body.isadmin,
+                'admin.is_techinical': req.body.istechinical
+            })
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(newUser.password, salt);
+            try {
+                newUser.password = hash;
+                const result = await newUser.save();
+                const msg = {
+                    to: req.body.email,
+                    from: 'watcher@fantasy.com',
+                    templateId: 'd-53bf22258e54480d9ac1d457935356cd'
+                };
+                sgMail.send(msg);
+                res.json(result)
+            }
+            catch (e) {
+                throw e
+            }
+        }
+        else {
+            res.json(`The email ${req.body.email} has already been used.`)
         }
     }
-    else {
-        res.json(`The email ${req.body.email} has already been used.`)
+    catch (e) {
+        throw e
     }
-
 })
 
 router.post('/login', async (req, res) => {
-    const user = await User.find({ email: req.body.email });
-    if (user === null) {
-        res.status(404).json('Please Check the credentials')
-    }
-    else {
-        const test = await bcrypt.compare(req.body.password, user[0].password);
-        if (test === true) {
-            const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
-            const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
-            res.json({
-                sucess: "true",
-                token: `Bearer ${token}`
-            })
-        }
-        else {
+    try {
+        const user = await User.find({ email: req.body.email });
+        if (user === null || user.length === 0) {
             res.status(404).json('Please Check the credentials')
         }
+        else {
+            const test = await bcrypt.compare(req.body.password, user[0].password);
+            if (test === true) {
+                const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
+                const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
+                res.json({
+                    sucess: "true",
+                    token: `Bearer ${token}`
+                })
+            }
+            else {
+                res.status(404).json('Please Check the credentials')
+            }
+        }
+    }
+    catch (e) {
+        console.warn(e)
     }
 })
 
