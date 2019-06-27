@@ -66,7 +66,7 @@ router.post('/login', async (req, res) => {
                 const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
                 res.json({
                     sucess: "true",
-                    token: `Bearer ${token}`
+                    token: `${token}`
                 })
             }
             else {
