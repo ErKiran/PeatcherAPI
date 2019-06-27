@@ -48,11 +48,11 @@ const CourseSchema = new mongoose.Schema({
             required: true
         },
 
-    },
-    date: {
-        type: Date,
-        default: Date.now()
     }
-});
+},
+    {
+        timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+
+    });
 
 module.exports = Course = mongoose.model('course', CourseSchema)

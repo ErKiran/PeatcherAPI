@@ -12,11 +12,9 @@ const ContactSchema = new mongoose.Schema({
     },
     message: {
         type: String
-    },
-    date: {
-        type: Date,
-        default: Date.now()
     }
-});
+}, {
+        timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    });
 
 module.exports = ContactUS = mongoose.model('contact_us', ContactSchema)

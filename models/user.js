@@ -28,10 +28,15 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    date: {
-        type: Date,
-        default: Date.now()
-    }
-});
+    passwordResetToken: {
+        type: String,
+        default: false
+    },
+    passwordResetExpires: {
+        type: Date
+    },
+}, {
+        timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    });
 
 module.exports = User = mongoose.model('users', UserSchema)
