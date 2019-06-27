@@ -129,7 +129,7 @@ router.post('/user/reset-password', async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.body.password, salt);
-    await User.updateOne({ _id: test_token[0]._userId }, { $set: { password: hash } })
+    await User.updateOne({ _id: test_token[0]._userId }, { $set: { password: hash, passwordResetToken: false } })
     res.json(user);
 })
 
