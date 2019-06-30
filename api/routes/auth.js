@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const passport = require('passport');
 const nodemailer = require('nodemailer');
 const SendGridTransport = require('nodemailer-sendgrid-transport');
-//const sgMail = require('@sendgrid/mail');
+
 
 const User = require('../../models/user');
 const VerifyMe = require('../../models/tokenverification');
@@ -18,9 +18,11 @@ const transporter = nodemailer.createTransport(SendGridTransport({
     }
 }));
 
-//sgMail.setApiKey(sendGrid);
+
 
 const router = express.Router();
+
+
 
 router.post('/register', async (req, res) => {
     try {
@@ -48,30 +50,21 @@ router.post('/register', async (req, res) => {
                     for: 'Activate Email'
                 });
                 const token_dum = await token.save()
-                /* const msg = {
-                     to: req.body.email,
-                     from: 'peteacher.com',
-                     subject: 'Welcome to BestEverResume! Co:nfirm Your Email',
-                     text: 'and easy to do anywhere, even with Node.js',
-                     html: `<h1>You Sucessfully Signed Up! 
-                     Click this link to activate your account 
-                     <a href ="http://localhost:5000/user/activate-email/:${token_dum.token}">Link</a>
-                     <p>Click this  to set a new password</p></h1>`,
-                 };*/
-                const mail = await transporter.sendMail({
-                    to: req.body.email,
-                    from: 'noreply@pteacher.com',
-                    subject: 'Welcome to Peatcher! Confirm Your Email',
-                    html: `<h1>You Sucessfully Signed Up! 
+                if (result) {
+                    const mail = await transporter.sendMail({
+                        to: req.body.email,
+                        from: 'noreply@pteacher.com',
+                        subject: 'Welcome to Peatcher! Confirm Your Email',
+                        html: `<h1>You Sucessfully Signed Up! 
                     Click this link to activate your account 
-                    <a href ="http://localhost:5000/api/user/activate-email/:${token_dum.token}">Link</a>
-                    <p>Click this  to set a new password</p></h1>`
-                });
-                if (mail.message === 'success') {
-                    res.json({
-                        msg: `Activation Key has been sent to your mail ${req.body.email}`,
-                        user: result
-                    })
+                    <a href ="http://localhost:5000/api/user/activate-email/:${token_dum.token}">Link</a>`
+                    });
+                    if (mail.message === 'success') {
+                        res.json({
+                            msg: `Activation Key has been sent to your mail ${req.body.email}`,
+                            user: result
+                        })
+                    }
                 }
             }
             catch (e) {
@@ -111,7 +104,18 @@ router.post('/forget-password', async (req, res) => {
         token: crypto.randomBytes(16).toString('hex'),
         for: 'Reset Password'
     });
+
     const token_dum = await token.save();
+    const mail = await transporter.sendMail({
+        to: req.body.email,
+        from: 'noreply@pteacher.com',
+        subject: 'Forget password',
+        html: `<h1>You are receiving this mail because you have ask for password Reset! 
+    Click this link to reset your account password 
+    <a href ="http://localhost:5000/api/user/reset-password/:${token_dum.token}">Link</a>
+    <p>Click this  to set a new password</p></h1>`
+    });
+    console.log(mail)
     await User.updateOne({ email: req.body.email }, { $set: { passwordResetToken: true } })
     res.json(user)
     //send-mail to user with token 
