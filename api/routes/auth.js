@@ -121,8 +121,8 @@ router.post('/forget-password', async (req, res) => {
     //send-mail to user with token 
 })
 
-router.post('/user/reset-password', async (req, res) => {
-    const test_token = await VerifyMe.find({ token: req.body.token, for: 'Reset Password' });
+router.post('/user/reset-password/:token', async (req, res) => {
+    const test_token = await VerifyMe.find({ token: req.params.token, for: 'Reset Password' });
     if (test_token === null) {
         res.json('We are unable to find User by this token');
     }
