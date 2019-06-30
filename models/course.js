@@ -3,7 +3,8 @@ const CourseSchema = new mongoose.Schema({
     course: {
         title: {
             type: String,
-            required: true
+            required: true,
+            unique: true
         },
         desc: {
             type: String,
@@ -13,26 +14,23 @@ const CourseSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        author: {
-            name: {
-                type: String,
-                required: true
-            },
-            image: {
-                type: String,
-                required: true
-            }
+        author:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'teacher'
         },
-        rating: {
+        rating: [{
             star: {
                 type: Number,
                 required: true
             },
-            number: {
-                type: String,
-                required: true
-            },
-        },
+            by: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true,
+                ref: 'student'
+            }
+        }],
         price: {
             currency: {
                 type: String,
