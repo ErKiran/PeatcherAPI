@@ -22,12 +22,10 @@ const CourseSchema = new mongoose.Schema({
         },
         rating: [{
             star: {
-                type: Number,
-                required: true
+                type: Number
             },
             by: {
                 type: mongoose.Schema.Types.ObjectId,
-                required: true,
                 ref: 'student'
             }
         }],
@@ -42,8 +40,7 @@ const CourseSchema = new mongoose.Schema({
             }
         },
         currently_enrolled: {
-            type: Number,
-            required: true
+            type: Number
         },
 
     }
