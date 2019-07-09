@@ -85,7 +85,7 @@ router.get('/api/user/activate-email/:token', async (req, res) => {
     if (test_token === null) {
         res.json('We are unable to find User by this token');
     }
-    const user = await User.find({ _id: test_token[0]._userId, email: req.body.email });
+    const user = await User.find({ _id: test_token[0]._userId });
     if (user === null) {
         res.json('The user and token are not associated');
     }
