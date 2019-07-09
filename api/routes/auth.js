@@ -57,7 +57,7 @@ router.post('/register', async (req, res) => {
                         subject: 'Welcome to Peatcher! Confirm Your Email',
                         html: `<h1>You Sucessfully Signed Up! 
                     Click this link to activate your account 
-                    <a href ="${req.header('host')}api/user/activate-email/:${token_dum.token}">Link</a>`
+                    <a href ="${req.header('host')}/api/user/activate-email/:${token_dum.token}">Link</a>`
                     });
                     if (mail.message === 'success') {
                         res.json({
