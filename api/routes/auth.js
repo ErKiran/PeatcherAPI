@@ -80,8 +80,8 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.post('/user/activate-email', async (req, res) => {
-    const test_token = await VerifyMe.find({ token: req.body.token });
+router.get('/api/user/activate-email/:token', async (req, res) => {
+    const test_token = await VerifyMe.find({ token: req.params.token });
     if (test_token === null) {
         res.json('We are unable to find User by this token');
     }
