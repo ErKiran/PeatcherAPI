@@ -89,7 +89,8 @@ router.get('/api/user/activate-email/:token', async (req, res) => {
     if (user === null) {
         res.json('The user and token are not associated');
     }
-    await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
+    const update = await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
+    console.log(update)
     res.json(user);
 })
 
