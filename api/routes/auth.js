@@ -90,8 +90,13 @@ router.get('/api/user/activate-email/:token', async (req, res) => {
         res.json('The user and token are not associated');
     }
     const update = await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
-    console.log(update)
-    res.json(user);
+    if (update) {
+        res.json('Email Activated ');
+        res.redirect('http://www.peatcher.com/login')
+    }
+    else {
+        res.json("Error while validating Info");
+    }
 })
 
 router.post('/forget-password', async (req, res) => {
