@@ -152,17 +152,20 @@ router.post('/login', async (req, res) => {
         }
         else {
             const test = await bcrypt.compare(req.body.password, user[0].password);
-            console.log(user);
-            if (test === true) {
-                const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
-                const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
-                res.json({
-                    sucess: "true",
-                    token: `${token}`
-                })
-            }
-            else {
-                res.status(404).json('Please Check the credentials')
+            if (user[0].isactive === true) {
+                if (test === true) {
+                    const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
+                    const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
+                    res.json({
+                        sucess: "true",
+                        token: `${token}`
+                    })
+                }
+                else {
+                    res.status(404).json('Please Check the credentials')
+                }
+            } else {
+                res.status(401).json('Activate your account before you can log in')
             }
         }
     }
