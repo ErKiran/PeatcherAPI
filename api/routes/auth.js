@@ -80,7 +80,7 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.get('/api/user/activate-email/:token', async (req, res) => {
+router.get('/api/user/activate-email/:token', async (req, res, next) => {
     const test_token = await VerifyMe.find({ token: req.params.token });
     if (test_token === null) {
         res.json('We are unable to find User by this token');
@@ -93,6 +93,7 @@ router.get('/api/user/activate-email/:token', async (req, res) => {
     if (update) {
         //res.json('Email Activated ');
         res.redirect('http://www.peatcher.com/login', 200);
+        next
     }
     else {
         res.json("Error while validating Info");
