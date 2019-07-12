@@ -92,7 +92,7 @@ router.get('/api/user/activate-email/:token', async (req, res, next) => {
     }
     const update = await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
     if (update) {
-        res.redirect('http://www.peatcher.com/login',200)
+        res.redirect('http://www.peatcher.com/login', 200)
         next();
     }
     else {
@@ -152,6 +152,7 @@ router.post('/login', async (req, res) => {
         }
         else {
             const test = await bcrypt.compare(req.body.password, user[0].password);
+            console.log(user);
             if (test === true) {
                 const payload = { id: user[0].id, name: user[0].name, isadmin: user[0].admin.isadmin, istechinical: user[0].admin.istechinical };
                 const token = jwt.sign(payload, secretOrKey, { expiresIn: 3600 });
