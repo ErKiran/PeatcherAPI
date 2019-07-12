@@ -40,7 +40,7 @@ module.exports =
                 errors.password = 'Password must contain atleast one special characters';
             }
 
-            if (password !== password2) {
+            if (data.password !== data.password2) {
                 errors.password2 = `Password doesn't match`
             }
             return {
