@@ -93,7 +93,7 @@ router.get('/api/user/activate-email/:token', async (req, res, next) => {
     if (update) {
         //res.json('Email Activated ');
         res.redirect('http://www.peatcher.com/login', 200);
-        next
+        next();
     }
     else {
         res.json("Error while validating Info");
