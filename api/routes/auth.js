@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const passport = require('passport');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const SendGridTransport = require('nodemailer-sendgrid-transport');
 
@@ -91,7 +92,7 @@ router.get('/api/user/activate-email/:token', async (req, res, next) => {
     }
     const update = await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
     if (update) {
-        res.sendFile('index.html');
+        res.sendFile(path.join(__dirname + '/index.html'));
         next();
     }
     else {
