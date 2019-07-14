@@ -30,6 +30,8 @@ require('./configs/passport')(passport)
 app.use('/', auth);
 app.use('/admin', admin);
 app.use('/contact_us', contactus)
+app.use('/user_details', require('./api/routes/user_details'));
+app.use('/user', require('./api/routes/teacher'))
 
 const port = process.env.PORT || 5000;
 

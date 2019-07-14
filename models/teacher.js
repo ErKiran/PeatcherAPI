@@ -5,9 +5,10 @@ const TeacherSchema = new mongoose.Schema({
         required: true,
         ref: 'users'
     },
-    image: {
-        type: String,
-        required: true
+    user_detail: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'user_details'
     },
     previous_experience: {
         type: String,

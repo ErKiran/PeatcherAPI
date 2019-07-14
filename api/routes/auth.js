@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const passport = require('passport');
-const path = require('path');
 const nodemailer = require('nodemailer');
 const SendGridTransport = require('nodemailer-sendgrid-transport');
 
