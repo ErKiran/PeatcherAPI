@@ -91,7 +91,8 @@ router.get('/api/user/activate-email/:token', async (req, res, next) => {
     }
     const update = await User.updateOne({ _id: test_token[0]._userId, }, { $set: { isactive: true } })
     if (update) {
-        window.location.href('http://www.peatcher.com/login')
+        //window.location.href()
+        res.redirect('http://www.peatcher.com/login', 301)
         next();
     }
     else {
