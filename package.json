@@ -1,5 +1,5 @@
 {
-  "name": "cricket_fantasy",
+  "name": "peatcher_api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,20 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ErKiran/fantasy_api.git"
+    "url": "https://github.com/ErKiran/PeatcherAPI"
   },
   "keywords": [
-    "fantasy",
-    "node",
-    "cricket",
-    "fantasy"
+    "peatcher",
+    "elearning"
   ],
   "author": "Kiran Adhikari",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ErKiran/fantasy_api/issues"
+    "url": "https://github.com/ErKiran/PeatcherAPI/issues"
   },
-  "homepage": "https://github.com/ErKiran/fantasy_api#readme",
+  "homepage": "https://github.com/ErKiran/PeatcherAPI#readme",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
     "bcryptjs": "^2.4.3",
