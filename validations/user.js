@@ -39,7 +39,7 @@ module.exports =
             if (Validator.isAlphanumeric(data.password)) {
                 errors.password = 'Password must contain atleast one special characters';
             }
-
+            console.log(data)
             if (data.password !== data.password2) {
                 errors.password2 = `Password doesn't match`
             }
