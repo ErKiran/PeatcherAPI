@@ -19,13 +19,24 @@ router.post('/teacher', passport.authenticate('jwt', { session: false }), async 
     }
 })
 
+router.patch('/teacher', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        await Teacher.updateOne({ _userId: req.user.id }, { $set: req.body });
+        const result = await Teacher.find({ _userId: req.user.id });
+        res.json(result);
+    }
+    catch (e) {
+        throw e
+    }
+})
+
 router.get('/teacher', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const teacher = await Teacher.find({ _userId: req.user.id }).populate('user_detail');
     res.json(teacher)
 })
 
 router.get('/teacher/all', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const teacher = await Teacher.find({ }).populate('user_detail');
+    const teacher = await Teacher.find({}).populate('user_detail');
     res.json(teacher)
 })
 

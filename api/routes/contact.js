@@ -4,12 +4,6 @@ const ContactUs = require('../../models/contactus');
 
 router.post('/', async (req, res) => {
     try {
-        /*const msg = {
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            message: req.body.message
-        }*/
         const result = await new ContactUs(req.body).save();
         res.json(result)
     }

@@ -5,16 +5,19 @@ const StudentSchema = new mongoose.Schema({
         required: true,
         ref: 'users'
     },
+    user_detail: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'user_details'
+    },
     interest:
     {
         type: [String],
         required: true
-    }
-    ,
+    },
     course: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
             ref: 'course'
         }
     ]

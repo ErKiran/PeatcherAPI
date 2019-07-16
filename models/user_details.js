@@ -19,6 +19,10 @@ const UserDetailsSchema = new mongoose.Schema({
     phone_number: {
         type: String
     },
+    image: {
+        type: String,
+        required: true
+    },
     _userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

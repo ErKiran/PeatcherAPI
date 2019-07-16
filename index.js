@@ -31,7 +31,10 @@ app.use('/', auth);
 app.use('/admin', admin);
 app.use('/contact_us', contactus)
 app.use('/user_details', require('./api/routes/user_details'));
-app.use('/user', require('./api/routes/teacher'))
+app.use('/user',
+    require('./api/routes/teacher'),
+    require('./api/routes/student'))
+app.use('/course', require('./api/routes/course'))
 
 const port = process.env.PORT || 5000;
 
